@@ -1,0 +1,47 @@
+import src.empleado.*
+import src.mensajeros.*
+import src.paquete.*
+import src.vehiculos.*
+
+test "contratamos a Neo"{
+    assert.equals(0, empleados.listaDeEmpleados().size())
+    empleados.contratarEmpleado(neo)
+    assert.equals(1, empleados.listaDeEmpleados().size())
+}
+
+test "despedimos a Neo"{
+    empleados.contratarEmpleado(neo)
+    assert.equals(1, empleados.listaDeEmpleados().size())
+
+    empleados.despedirEmpleado(neo)
+    assert.equals(0, empleados.listaDeEmpleados().size())
+}
+
+test "Despedimos a todos"{
+    empleados.contratarEmpleado(neo)
+    empleados.contratarEmpleado(jeanGray)
+
+    assert.equals(2, empleados.listaDeEmpleados().size())
+
+    empleados.despedirTodos()
+    assert.equals(0, empleados.listaDeEmpleados().size())
+}
+
+test "es una mensajeria grande?"{
+    assert.equals(false, empleados.esMensajeriaGrande())
+
+    empleados.contratarEmpleado(neo)
+    empleados.contratarEmpleado(jeanGray)
+    empleados.contratarEmpleado(saraConnor)
+
+    assert.equals(true, empleados.esMensajeriaGrande())
+}
+
+test "puede el primer empleado entregar " {
+    empleados.contratarEmpleado(neo)
+    empleados.contratarEmpleado(jeanGray)
+    empleados.contratarEmpleado(saraConnor)
+
+    assert.equals(true, empleados.puedeEntregarPrimerEmpleado(paqueteBrooklyn))
+  
+}

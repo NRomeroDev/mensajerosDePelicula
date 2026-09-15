@@ -42,3 +42,4 @@ object saraConnor{
         return peso + vehiculo.peso()
     }
 }
+

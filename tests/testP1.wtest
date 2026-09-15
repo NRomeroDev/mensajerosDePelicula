@@ -1,6 +1,6 @@
-import mensajeros.*
-import paquete.*
-import vehiculos.*
+import src.mensajeros.*
+import src.paquete.*
+import src.vehiculos.*
 
 test "precio de paquetes y pagos de los mismos"{
    
@@ -18,26 +18,25 @@ test "precio de paquetes y pagos de los mismos"{
 }
 
 test "paquete no pago. No apto para ser entregado por Neo en la Matrix"{
-   
-    paqueteMatrix.mensajero(neo)
-    assert.equals(false, paqueteMatrix.sePuedeEntregar())
+    
+    assert.equals(false, paqueteMatrix.sePuedeEntregar(neo))
+
 }
 
 test "paquete pago. Apto para ser entregado por Jean Gray a la Matrix"{
    
     paqueteMatrix.pagarPaquete()
-    assert.equals(true, paqueteMatrix.sePuedeEntregar())
+    assert.equals(true, paqueteMatrix.sePuedeEntregar(jeanGray))
 }
 
 test "paquete pago. No apto para Brookyn, entregado por Sara (70 kilos) con camion con un acoplado"{
     
     paqueteBrooklyn.pagarPaquete()
-    paqueteBrooklyn.mensajero(saraConnor)
     saraConnor.peso(70)
     saraConnor.vehiculo(camion)
     camion.cantAcoples(1)
 
-    assert.equals(false, paqueteBrooklyn.sePuedeEntregar())
+    assert.equals(false, paqueteBrooklyn.sePuedeEntregar(saraConnor))
 }
 
 test "paquete pago. Apto para Broocklyn, entregado por Sara(70 kilo) con moto"{
@@ -45,5 +44,5 @@ test "paquete pago. Apto para Broocklyn, entregado por Sara(70 kilo) con moto"{
     paqueteBrooklyn.pagarPaquete()
     saraConnor.peso(70)
 
-    assert.equals(true, paqueteBrooklyn.sePuedeEntregar())
+    assert.equals(true, paqueteBrooklyn.sePuedeEntregar(saraConnor))
 }

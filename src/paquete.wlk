@@ -3,7 +3,6 @@ import vehiculos.*
 
 object paqueteBrooklyn{
     var property pago = false 
-    var property mensajero = jeanGray
     const precio = 150
 
     method precio(){
@@ -14,14 +13,13 @@ object paqueteBrooklyn{
         self.pago(true)
     }
 
-    method sePuedeEntregar(){
+    method sePuedeEntregar(mensajero){
         return self.pago() && mensajero.peso() <= 1000
     }
 }
 
 object paqueteMatrix{
     var property pago = false 
-    var property mensajero = jeanGray
     const precio = 500
 
     method precio(){
@@ -32,7 +30,7 @@ object paqueteMatrix{
         self.pago(true)
     }
     
-    method sePuedeEntregar(){
+    method sePuedeEntregar(mensajero){
         return self.pago() and mensajero.puedeLlamar()
     }
 }
