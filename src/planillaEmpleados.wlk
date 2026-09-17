@@ -1,6 +1,7 @@
-import src.paquete.*
+import paquete.*
+import mensajeros.*
 
-object empleados{
+object planillaEmpleados{
     const listaDeEmpleados = []
 
     method contratarEmpleado(empleado){

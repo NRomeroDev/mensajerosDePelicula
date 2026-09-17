@@ -1,36 +1,24 @@
 import mensajeros.*
-import vehiculos.*
+import destinos.*
 
-object paqueteBrooklyn{
-    var property pago = false 
-    const precio = 150
+object paquete{
+    var pago = false
 
-    method precio(){
-        return precio
+
+    method pago(){
+        return pago
+    }
+
+    method precio(destino){
+        return destino.precio()
     }
 
     method pagarPaquete(){
-        self.pago(true)
+        pago = true
     }
 
-    method sePuedeEntregar(mensajero){
-        return self.pago() && mensajero.peso() <= 1000
-    }
-}
 
-object paqueteMatrix{
-    var property pago = false 
-    const precio = 500
-
-    method precio(){
-        return precio
-    }
-
-    method pagarPaquete(){
-        self.pago(true)
-    }
-    
-    method sePuedeEntregar(mensajero){
-        return self.pago() and mensajero.puedeLlamar()
+    method sePuedeEntregar(destino, mensajero){
+        return self.pago() && destino.requisito(mensajero)
     }
 }

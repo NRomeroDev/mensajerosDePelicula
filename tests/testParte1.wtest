@@ -1,0 +1,37 @@
+import src.mensajeros.*
+import src.paquete.*
+import src.vehiculos.*
+import src.destinos.*
+
+describe "Prueba de costo del paquete por destino, prueba de pago del paquete"{
+    test "Costo de paquete de Brookyn"{
+        assert.equals(150, paquete.precio(brookyn))
+    }
+    
+    test "Costo de paquete de Matrix"{
+        assert.equals(500, paquete.precio(matrix))
+    }
+
+    test "Prueba de pago de paquete, primero no va a estar pago, luego si"{
+        assert.equals(false, paquete.pago())
+
+        paquete.pagarPaquete()
+
+        assert.equals(true, paquete.pago())
+    }
+}
+
+describe "Prueba de envio de paquete a la matrix, el paquete sera llevado por Neo, primero sin estar pago, luego va a a ser pago" {
+    test "Envio de paquete no pago a la Matrix, mensajero Neo"{
+
+        // El paquete siempre se inicia sin estar pago
+
+        assert.equals(false, paquete.sePuedeEntregar(matrix, neo))
+    }
+
+    test "Envio de paquete pago a la Matrix, mensajero Neo"{
+        
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(matrix, neo))
+    }
+}
