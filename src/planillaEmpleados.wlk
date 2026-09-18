@@ -20,17 +20,17 @@ object planillaEmpleados{
         return listaDeEmpleados.size() > 2
     }
 
-    method puedeEntregarPrimerEmpleado(paquete){
-        paquete.sePuedeEntregar(listaDeEmpleados.get(0))
+    method puedeEntregarPrimerEmpleado(destino){
+        return destino.requisito(listaDeEmpleados.first())
     }
 
     method pesoDeUltimoEmpleado(){
-        listaDeEmpleados.get(listaDeEmpleados.size()-1).peso()
+        return listaDeEmpleados.last().peso()
     }
 
 
     // Testing
-    method listaDeEmpleados(){
+    method listaEmpleados(){
         return listaDeEmpleados
     }
 

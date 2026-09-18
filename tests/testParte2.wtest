@@ -3,3 +3,133 @@ import src.mensajeros.*
 import src.paquete.*
 import src.vehiculos.*
 import src.destinos.*
+
+describe "Se hace una prueba de contratacion de 2 empleados, Neo y Jean Gray"{
+    test "Se chequea que la planilla de empleados este vacia"{
+        assert.equals([], planillaEmpleados.listaEmpleados())
+    }
+
+    test "Se contrata a Neo"{
+        planillaEmpleados.contratarEmpleado(neo)
+        assert.equals([neo], planillaEmpleados.listaEmpleados())
+    }
+
+    test "Se contrata a Jean Gray"{
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        assert.equals([neo, jeanGray], planillaEmpleados.listaEmpleados())
+    }
+}
+
+describe "Se hace una prueba de despidos de empleados" {
+    test "Se despide a Jean Gray"{
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray) // La planillas de empleados simepre inician vacias
+
+        assert.equals([neo, jeanGray], planillaEmpleados.listaEmpleados())
+
+        planillaEmpleados.despedirEmpleado(jeanGray)
+
+        assert.equals([neo], planillaEmpleados.listaEmpleados())
+
+    }
+
+    test "Se despide a Neo"{
+        
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+
+        assert.equals([neo, jeanGray], planillaEmpleados.listaEmpleados())
+
+        planillaEmpleados.despedirEmpleado(neo)
+
+        assert.equals([jeanGray], planillaEmpleados.listaEmpleados())
+    }
+
+    test "Se despide a toda la planilla"{
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        assert.equals([neo, jeanGray, saraConnor], planillaEmpleados.listaEmpleados())
+
+        planillaEmpleados.despedirTodos()
+
+        assert.equals([], planillaEmpleados.listaEmpleados())
+    }
+}
+
+describe "se prueba si la mensajeria es grande, primero un casos donde no lo es, uno donde si" {
+    test "se comprueba con una planilla de empleados vacia si es grande, no deberia serlo"{
+        assert.equals(false, planillaEmpleados.esMensajeriaGrande())
+    }
+
+    test "se comprueba con una planilla de empleados de un empleado si es grande, no deberia serlo"{
+        planillaEmpleados.contratarEmpleado(neo)
+
+        assert.equals(false, planillaEmpleados.esMensajeriaGrande())
+    }
+
+    test "se comprueba con una planilla de empleados de dos empleado si es grande, no deberia serlo"{
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+
+        assert.equals(false, planillaEmpleados.esMensajeriaGrande()) 
+    }
+
+    test "se comprueba con una planilla de empleados de tres empleado si es grande, deberia serlo"{
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        assert.equals(true, planillaEmpleados.esMensajeriaGrande()) 
+    }
+}
+
+describe "Se comprueba dos casos para entregar un paquete por el primer mensajero de la planilla,
+            (Neo), uno donde si puede entregar el paquete y otro donde no"{
+
+    test "Entrega de paquete a la Matrix por Neo, se espera que pueda hacerlo" {
+
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        // Aclaro que Neo se inicia siempre con Credito, es decir puede llamar
+        assert.equals(true, planillaEmpleados.puedeEntregarPrimerEmpleado(matrix))
+    }
+
+    test "Entrega de paquete a la Matrix por Neo, se espera que no pueda hacerlo"{
+        
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        
+        neo.puedeLlamar(false)
+        assert.equals(false, planillaEmpleados.puedeEntregarPrimerEmpleado(matrix))
+
+    }
+
+}
+
+describe "Prueba de peso de ultimo empleado (Sara Connor) en diversos casos por su peso variable" {
+    test "Se prueba caso de ultimo empleado, deberia pesar 100 kilos"{
+
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        assert.equals(100, planillaEmpleados.pesoDeUltimoEmpleado())
+    }
+
+    test "Se prueba caso de ultimo empleado, se aumentan 70 kilos, se espera  170 kilos"{
+
+        planillaEmpleados.contratarEmpleado(neo)
+        planillaEmpleados.contratarEmpleado(jeanGray)
+        planillaEmpleados.contratarEmpleado(saraConnor)
+
+        saraConnor.peso(70)
+        assert.equals(170, planillaEmpleados.pesoDeUltimoEmpleado())
+    }
+}
