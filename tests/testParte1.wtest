@@ -22,16 +22,53 @@ describe "Prueba de costo del paquete por destino, prueba de pago del paquete"{
 }
 
 describe "Prueba de envio de paquete a la matrix, el paquete sera llevado por Neo, primero sin estar pago, luego va a a ser pago" {
-    test "Envio de paquete no pago a la Matrix, mensajero Neo"{
+    test "Paquete no pago, no deberia poder enviarse"{
 
         // El paquete siempre se inicia sin estar pago
 
         assert.equals(false, paquete.sePuedeEntregar(matrix, neo))
     }
 
-    test "Envio de paquete pago a la Matrix, mensajero Neo"{
+    test "Paquete pago, deberia poder enviarse"{
         
         paquete.pagarPaquete()
         assert.equals(true, paquete.sePuedeEntregar(matrix, neo))
+    }
+}
+
+describe "Prueba de envio a la matrix, el paquete sera llevado por Jean Gray, primero va a estar pago, luego no va a estarlo"{
+    test "Paquete pago, deberia poder enviarse"{
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(matrix, jeanGray))
+    }
+
+    test "Paquete no pago, no deberia poder enviarse"{
+        assert.equals(false, paquete.sePuedeEntregar(matrix, jeanGray))
+    }
+}
+
+describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, el mensajero es Sara Connor, Sara pesa 70kg, 
+            se usaran distintos tipos de vehiculos (camion y moto)" {
+
+    test "Prueba de envio de paquete, vehiculo camion sin acoplados, deberia poder enviarse"{
+        saraConnor.peso(70)
+        saraConnor.nuevoVehiculo(camion) // El camion siempre inicia sin acoplados
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(brookyn, saraConnor))
+    }
+
+    test "Prueba de envio de paquete, vehiculo camion con un acople, no deberia poder enviarse"{
+        saraConnor.peso(70)
+        camion.cantAcoples(1)
+        saraConnor.nuevoVehiculo(camion) 
+        paquete.pagarPaquete()
+        assert.equals(false, paquete.sePuedeEntregar(brookyn, saraConnor))
+    }
+
+    test "Prueba de envio paquete, vehiculo moto, deberia poder enviarse"{
+        saraConnor.peso(70)
+        saraConnor.nuevoVehiculo(moto) 
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(brookyn, saraConnor))
     }
 }
