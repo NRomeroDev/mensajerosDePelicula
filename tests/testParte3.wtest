@@ -1,0 +1,96 @@
+// Se necesita:
+// 1. Averiguar si un paquete puede ser entregado por la empresa de mensajería, es decir, si al menos uno de sus mensajeros puede entregar el paquete.
+// 2. Obtener todos los mensajeros que pueden llevar un paquete dado. 
+// 3. Saber si una mensajería tiene sobrepeso. Esto sucede si el promedio del peso de los mensajeros es superior a 500 Kg. 
+// 4. Hacer que la empresa de mensajería envíe un paquete. Para ello elige cualquier mensajero entre los que pueden enviarlo y si no puede lo agrega a los paquetes pendientes. (leer también punto siguiente)
+// 5. Conocer la facturación de la empresa, que es el total ganado por los paquetes enviados.
+// 6. Dado un conjunto de paquetes, enviarlos a todos.
+// 7. Encontrar el paquete pendiente más caro y enviarlo, actualizando los pendientes en caso de haberlo podido enviar.
+// 8. Cada punto debe tener mínimo un test que demuestren su correcto funcionamiento.
+// 9. Agregar un nuevo mensajero y un nuevo paquete y garantizar que todo siga funcionando.
+
+import src.empresa.*
+import src.paquete.*
+import src.paquetito.*
+import src.paquetote.*
+import src.destinos.*
+import src.vehiculos.*
+import src.mensajeros.*
+
+
+
+describe "Averiguar si un paquete puede ser entregado, caso de si caso de no"{
+    test "Prueba de alguien puede entregar un paquete especial (todos los detinos), se espera true"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquetote.destino(matrix)
+        paquetote.pagarPaquete(100)
+
+
+        assert.equals(true, empresa.puedeAlguienEntregar(paquetote))
+    }
+
+    test "prueba de alguien puede entregar un paquete a brooklyn, se espera false"{
+
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+
+        neo.puedeLlamar(false)
+
+        paquete.destino(brooklyn)
+
+        assert.equals(false, empresa.puedeAlguienEntregar(paquete))
+
+    }
+}
+
+test "Quienes pueden entregar el paquete (destino broklyn)" {
+    
+    empresa.contratarEmpleado(neo)
+    empresa.contratarEmpleado(saraConnor)
+    empresa.contratarEmpleado(jeanGray)
+    
+    paquete.destino(matrix)
+    paquete.pagarPaquete()
+
+    assert.equals([neo, jeanGray], empresa.quienesPuedenEntregar(paquete))
+
+}
+
+describe "Prueba de sobrepeso de la empresa, caso de si, caso de no" {
+    test "Prueba de sobre peso con 3 empledos, se espera que NO tenga sobre peso"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+    
+        assert.equals(false, empresa.haySobrePeso())
+    }
+
+    test "Prueba de sobre peso con 3 empledos, se espera que SI tenga sobre peso"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+    
+        camion.cantAcoples(10)
+        saraConnor.nuevoVehiculo(camion)
+
+        assert.equals(true, empresa.haySobrePeso())
+    }
+}
+
+describe "prueba de envio de paquete, se contabiliza la ganancia, en caso de no enviarse se va a agregar como paquete pendiente"{
+    test "prueba de envio de paquete se espera una ganancia de 500" {
+
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquete.pagarPaquete()
+
+        empresa.entregarPaqueteSiSePuede(paquete)
+
+        assert.equals(500 , empresa.gananciaTotal())
+    }
+}

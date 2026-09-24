@@ -30,26 +30,24 @@ describe "Prueba de envio de paquete a la matrix, el paquete sera llevado por Ne
 
         // El paquete siempre empieza con mensajero siendo neo y con destino la matrix
 
-        assert.equals(false, paquete.sePuedeEntregar())
+        assert.equals(false, paquete.sePuedeEntregar(neo))
     }
 
     test "Paquete pago, deberia poder enviarse"{
         
         paquete.pagarPaquete()
-        assert.equals(true, paquete.sePuedeEntregar())
+        assert.equals(true, paquete.sePuedeEntregar(neo))
     }
 }
 
 describe "Prueba de envio a la matrix, el paquete sera llevado por Jean Gray, primero va a estar pago, luego no va a estarlo"{
     test "Paquete pago, deberia poder enviarse"{
         paquete.pagarPaquete()
-        paquete.mensajero(jeanGray)
-        assert.equals(true, paquete.sePuedeEntregar())
+        assert.equals(true, paquete.sePuedeEntregar(jeanGray))
     }
 
     test "Paquete no pago, no deberia poder enviarse"{
-        paquete.mensajero(jeanGray)
-        assert.equals(false, paquete.sePuedeEntregar())
+        assert.equals(false, paquete.sePuedeEntregar(jeanGray))
     }
 }
 
@@ -62,9 +60,8 @@ describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, 
         paquete.pagarPaquete()
 
         paquete.destino(brooklyn)
-        paquete.mensajero(saraConnor)
 
-        assert.equals(true, paquete.sePuedeEntregar())
+        assert.equals(true, paquete.sePuedeEntregar(saraConnor))
     }
 
     test "Prueba de envio de paquete, vehiculo camion con un acople, no deberia poder enviarse"{
@@ -74,9 +71,8 @@ describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, 
         paquete.pagarPaquete()
 
         paquete.destino(brooklyn)
-        paquete.mensajero(saraConnor)
 
-        assert.equals(false, paquete.sePuedeEntregar())
+        assert.equals(false, paquete.sePuedeEntregar(saraConnor))
     }
 
     test "Prueba de envio paquete, vehiculo moto, deberia poder enviarse"{
@@ -85,8 +81,7 @@ describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, 
         paquete.pagarPaquete()
  
         paquete.destino(brooklyn)
-        paquete.mensajero(saraConnor)
  
-        assert.equals(true, paquete.sePuedeEntregar())
+        assert.equals(true, paquete.sePuedeEntregar(saraConnor))
     }
 }

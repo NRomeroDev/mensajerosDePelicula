@@ -5,12 +5,14 @@ import mensajeros.*
 
 
 
-object planillaEmpleados{
+object empresa{
     const listaDeEmpleados = []
     var paquetesPendientes=[]
     var gananciaTotal = 0
 
-
+    method gananciaTotal(){
+        return gananciaTotal
+    }
 
     method paquetesPendientes(){
         return paquetesPendientes
@@ -42,12 +44,12 @@ object planillaEmpleados{
 
     method puedeAlguienEntregar(paquete){
         return listaDeEmpleados.any({mensajero => 
-            paquete.sePuedeEntregar()
+            paquete.sePuedeEntregar(mensajero)
         })
     }
 
     method quienesPuedenEntregar(paquete){
-        return listaDeEmpleados.filter({mensajero => paquete.sePuedeEntregar()})
+        return listaDeEmpleados.filter({mensajero => paquete.sePuedeEntregar(mensajero)})
     }
 
     method haySobrePeso(){
@@ -56,8 +58,6 @@ object planillaEmpleados{
 
     method entregarPaqueteSiSePuede(paquete){
         if(self.puedeAlguienEntregar(paquete)){
-
-            paquete.mensajero(self.quienesPuedenEntregar(paquete).first())
 
             self.enviar(paquete)
             paquetesPendientes.remove(paquete)
@@ -82,6 +82,8 @@ object planillaEmpleados{
     method paqueteMasCaro(){
         return paquetesPendientes.max({paquete => paquete.precio()})
     }
+
+
     // Testing
     method listaEmpleados(){
         return listaDeEmpleados

@@ -3,18 +3,14 @@ import destinos.*
 
 object paquetote{
 
-    var precioPagado = 0
-    var cantidadDestinos = 0
-    var mensajero = neo    
-    var destino = matrix
-
-    method mensajero(nuevoMensajero){
-         mensajero = nuevoMensajero
-    }
+    var precioPagado = 0 
+    var destinos = []
 
     method destino(nuevoDestino){
-        destino = nuevoDestino
+        destinos.add(nuevoDestino)
     }
+
+
 
     method pago(){
 
@@ -22,15 +18,15 @@ object paquetote{
 
     }
 
-    method cantidadDestinos(cantidad){
+    method cantidadDestinos(){
 
-        cantidadDestinos = cantidad
+        return destinos.size()
 
     }
 
     method precioTotal(){
 
-        return 100 * cantidadDestinos
+        return 100 * self.cantidadDestinos()
 
     }
 
@@ -40,15 +36,15 @@ object paquetote{
 
     }
 
-    method elMensajeroPuedeIrATodosLados(){
+    method elMensajeroPuedeIrATodosLados(mensajero){
       
-        return matrix.requisito(mensajero) && brooklyn.requisito(mensajero)
+        return destinos.all({ destino => destino.requisito(mensajero)})
     
     }
 
-    method sePuedeEntregar(){
+    method sePuedeEntregar(mensajero){
 
-        return self.pago() && self.elMensajeroPuedeIrATodosLados()
+        return self.pago() && self.elMensajeroPuedeIrATodosLados(mensajero)
 
     }
 }

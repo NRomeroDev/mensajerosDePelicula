@@ -4,12 +4,8 @@ import destinos.*
 object paquetito{
 
     const pago = true
-    var mensajero = neo    
     var destino = matrix
 
-    method mensajero(nuevoMensajero){
-         mensajero = nuevoMensajero
-    }
 
     method destino(nuevoDestino){
         destino = nuevoDestino
@@ -22,12 +18,12 @@ object paquetito{
         return 0
     }
 
-    method sePuedeEntregar(){ 
+    method sePuedeEntregar(mensajero){ 
         /* 
             Con respecto a la condicion de sePuedeEntregar, se elimino la condicion
             esta pago, ya que no tenia sentido tenerlo siendo que siempre sera true
 
         */
-        return destino.requisito()
+        return destino.requisito(mensajero)
     }
 }
