@@ -5,11 +5,13 @@ import src.destinos.*
 
 describe "Prueba de costo del paquete por destino, prueba de pago del paquete"{
     test "Costo de paquete de Brookyn"{
-        assert.equals(150, paquete.precio(brookyn))
+        paquete.destino(brooklyn)
+        assert.equals(150, paquete.precio())
     }
     
     test "Costo de paquete de Matrix"{
-        assert.equals(500, paquete.precio(matrix))
+        paquete.destino(matrix)
+        assert.equals(500, paquete.precio())
     }
 
     test "Prueba de pago de paquete, primero no va a estar pago, luego si"{
@@ -26,24 +28,28 @@ describe "Prueba de envio de paquete a la matrix, el paquete sera llevado por Ne
 
         // El paquete siempre se inicia sin estar pago
 
-        assert.equals(false, paquete.sePuedeEntregar(matrix, neo))
+        // El paquete siempre empieza con mensajero siendo neo y con destino la matrix
+
+        assert.equals(false, paquete.sePuedeEntregar())
     }
 
     test "Paquete pago, deberia poder enviarse"{
         
         paquete.pagarPaquete()
-        assert.equals(true, paquete.sePuedeEntregar(matrix, neo))
+        assert.equals(true, paquete.sePuedeEntregar())
     }
 }
 
 describe "Prueba de envio a la matrix, el paquete sera llevado por Jean Gray, primero va a estar pago, luego no va a estarlo"{
     test "Paquete pago, deberia poder enviarse"{
         paquete.pagarPaquete()
-        assert.equals(true, paquete.sePuedeEntregar(matrix, jeanGray))
+        paquete.mensajero(jeanGray)
+        assert.equals(true, paquete.sePuedeEntregar())
     }
 
     test "Paquete no pago, no deberia poder enviarse"{
-        assert.equals(false, paquete.sePuedeEntregar(matrix, jeanGray))
+        paquete.mensajero(jeanGray)
+        assert.equals(false, paquete.sePuedeEntregar())
     }
 }
 
@@ -54,7 +60,11 @@ describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, 
         saraConnor.peso(70)
         saraConnor.nuevoVehiculo(camion) // El camion siempre inicia sin acoplados
         paquete.pagarPaquete()
-        assert.equals(true, paquete.sePuedeEntregar(brookyn, saraConnor))
+
+        paquete.destino(brooklyn)
+        paquete.mensajero(saraConnor)
+
+        assert.equals(true, paquete.sePuedeEntregar())
     }
 
     test "Prueba de envio de paquete, vehiculo camion con un acople, no deberia poder enviarse"{
@@ -62,13 +72,21 @@ describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, 
         camion.cantAcoples(1)
         saraConnor.nuevoVehiculo(camion) 
         paquete.pagarPaquete()
-        assert.equals(false, paquete.sePuedeEntregar(brookyn, saraConnor))
+
+        paquete.destino(brooklyn)
+        paquete.mensajero(saraConnor)
+
+        assert.equals(false, paquete.sePuedeEntregar())
     }
 
     test "Prueba de envio paquete, vehiculo moto, deberia poder enviarse"{
         saraConnor.peso(70)
         saraConnor.nuevoVehiculo(moto) 
         paquete.pagarPaquete()
-        assert.equals(true, paquete.sePuedeEntregar(brookyn, saraConnor))
+ 
+        paquete.destino(brooklyn)
+        paquete.mensajero(saraConnor)
+ 
+        assert.equals(true, paquete.sePuedeEntregar())
     }
 }

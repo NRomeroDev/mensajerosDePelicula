@@ -4,9 +4,16 @@ import destinos.*
 object paquetito{
 
     const pago = true
-    var property mensajero = neo
-    var property destino = matrix
+    var mensajero = neo    
+    var destino = matrix
 
+    method mensajero(nuevoMensajero){
+         mensajero = nuevoMensajero
+    }
+
+    method destino(nuevoDestino){
+        destino = nuevoDestino
+    }
     method pago(){       // El paquete siempre va a estar pago
         return pago 
     }

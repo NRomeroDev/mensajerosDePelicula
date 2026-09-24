@@ -13,7 +13,7 @@ object matrix{
 
 
 
-object brookyn{ 
+object brooklyn{ 
 
     const precio = 150
 
