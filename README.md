@@ -54,7 +54,7 @@ Determinar **si ese _paquete_ puede ser entregado por una _persona_ en un determ
 - En tu solución, el mensajero es un atributo del paquete o no? Por qué? Pensar como sería la manera alternativa.
 - Revisá que no haya quedado precálculo en el peso de Sara
 
-## Segunda parte: Empresa de mensajería 
+# Segunda parte: Empresa de mensajería 
 
 Ahora aparece una empresa de mensajería. Esta tiene un conjunto de mensajeros, los cuales podrían ser cualquiera de los que ya tenemos y otros que se agreguen en el futuross. 
 
@@ -69,7 +69,7 @@ Se necesita poder:
 7. Hacer al menos un test por cada punto de los anteriores que demuestren su correcto funcionamiento.
 
 
-## Tercera parte: Mensajería  recargada
+# Tercera parte: Mensajería  recargada
 
 Nuevos requerimientos para la mensajería. Surgen otros paquetes que la empresa necesita enviar:
 - Paquetito: es gratis, o sea, simpre está pago. Ademas, cualquier mensajero lo puede llevar.

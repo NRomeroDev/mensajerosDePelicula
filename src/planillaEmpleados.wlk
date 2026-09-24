@@ -1,8 +1,20 @@
 import paquete.*
+import paquetito.*
+import paquetote.*
 import mensajeros.*
+
+
 
 object planillaEmpleados{
     const listaDeEmpleados = []
+    var paquetesPendientes=[]
+    var gananciaTotal = 0
+
+
+
+    method paquetesPendientes(){
+        return paquetesPendientes
+    }
 
     method contratarEmpleado(empleado){
         listaDeEmpleados.add(empleado)
@@ -28,7 +40,48 @@ object planillaEmpleados{
         return listaDeEmpleados.last().peso()
     }
 
+    method puedeAlguienEntregar(paquete){
+        return listaDeEmpleados.any({mensajero => 
+            paquete.sePuedeEntregar()
+        })
+    }
 
+    method quienesPuedenEntregar(paquete){
+        return listaDeEmpleados.filter({mensajero => paquete.sePuedeEntregar()})
+    }
+
+    method haySobrePeso(){
+        return 500 < (listaDeEmpleados.sum({mensajero => mensajero.peso()}) / listaDeEmpleados.size()) 
+    }
+
+    method entregarPaqueteSiSePuede(paquete){
+        if(self.puedeAlguienEntregar(paquete)){
+
+            paquete.mensajero(self.quienesPuedenEntregar(paquete).first())
+
+            self.enviar(paquete)
+            paquetesPendientes.remove(paquete)
+            
+        }else{
+            paquetesPendientes.add(paquete)
+        }
+    }
+
+    method enviar(paquete){
+        gananciaTotal += paquete.precio()
+    }
+
+    method enviarTodosLosPaquetes(paquete){
+        paquetesPendientes.forEach({paquete => self.entregarPaqueteSiSePuede(paquete)})
+    }
+
+    method entregarElPaqueteMasCaro(){
+        self.entregarPaqueteSiSePuede(self.paqueteMasCaro())
+    }
+
+    method paqueteMasCaro(){
+        return paquetesPendientes.max({paquete => paquete.precio()})
+    }
     // Testing
     method listaEmpleados(){
         return listaDeEmpleados

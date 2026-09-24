@@ -3,13 +3,14 @@ import destinos.*
 
 object paquete{
     var pago = false
-
+    var property mensajero = neo    
+    var property destino = matrix
 
     method pago(){
         return pago
     }
 
-    method precio(destino){
+    method precio(){
         return destino.precio()
     }
 
@@ -18,7 +19,7 @@ object paquete{
     }
 
 
-    method sePuedeEntregar(destino, mensajero){
+    method sePuedeEntregar(){
         return self.pago() && destino.requisito(mensajero)
     }
 }
