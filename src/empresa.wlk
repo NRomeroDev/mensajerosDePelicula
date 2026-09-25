@@ -7,7 +7,7 @@ import mensajeros.*
 
 object empresa{
     const listaDeEmpleados = []
-    var paquetesPendientes=[]
+    var paquetesPendientes = []
     var gananciaTotal = 0
 
     method gananciaTotal(){
@@ -57,12 +57,13 @@ object empresa{
     }
 
     method entregarPaqueteSiSePuede(paquete){
+
         if(self.puedeAlguienEntregar(paquete)){
 
             self.enviar(paquete)
             paquetesPendientes.remove(paquete)
             
-        }else{
+        }else if (!paquetesPendientes.contains(paquete)){
             paquetesPendientes.add(paquete)
         }
     }
@@ -71,8 +72,8 @@ object empresa{
         gananciaTotal += paquete.precio()
     }
 
-    method enviarTodosLosPaquetes(paquete){
-        paquetesPendientes.forEach({paquete => self.entregarPaqueteSiSePuede(paquete)})
+    method entregarTodosLosPaquetes(conjuntoDePaquetes){
+        conjuntoDePaquetes.forEach({paquete => self.entregarPaqueteSiSePuede(paquete)})
     }
 
     method entregarElPaqueteMasCaro(){
@@ -85,8 +86,12 @@ object empresa{
 
 
     // Testing
+
     method listaEmpleados(){
         return listaDeEmpleados
     }
 
+    method paquetesPendientes(paquete){
+        paquetesPendientes.add(paquete)
+    }
 }

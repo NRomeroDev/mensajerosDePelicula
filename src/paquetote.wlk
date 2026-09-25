@@ -14,7 +14,7 @@ object paquetote{
 
     method pago(){
 
-        return precioPagado == self.precioTotal()
+        return precioPagado == self.precio()
 
     }
 
@@ -24,7 +24,7 @@ object paquetote{
 
     }
 
-    method precioTotal(){
+    method precio(){
 
         return 100 * self.cantidadDestinos()
 
@@ -32,7 +32,7 @@ object paquetote{
 
     method pagarPaquete(pagoParcial){
 
-        precioPagado = (pagoParcial + precioPagado).min(self.precioTotal()) 
+        precioPagado = (pagoParcial + precioPagado).min(self.precio()) 
 
     }
 

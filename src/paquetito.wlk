@@ -4,6 +4,7 @@ import destinos.*
 object paquetito{
 
     const pago = true
+    const precio = 0
     var destino = matrix
 
 
@@ -14,8 +15,8 @@ object paquetito{
         return pago 
     }
 
-    method precio(){ // El paquete siempre va estar pago
-        return 0
+    method precio(){ // El paquete es gratis
+        return precio
     }
 
     method sePuedeEntregar(mensajero){ 

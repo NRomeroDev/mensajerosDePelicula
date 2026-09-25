@@ -1,18 +1,8 @@
-// Se necesita:
-// 1. Averiguar si un paquete puede ser entregado por la empresa de mensajería, es decir, si al menos uno de sus mensajeros puede entregar el paquete.
-// 2. Obtener todos los mensajeros que pueden llevar un paquete dado. 
-// 3. Saber si una mensajería tiene sobrepeso. Esto sucede si el promedio del peso de los mensajeros es superior a 500 Kg. 
-// 4. Hacer que la empresa de mensajería envíe un paquete. Para ello elige cualquier mensajero entre los que pueden enviarlo y si no puede lo agrega a los paquetes pendientes. (leer también punto siguiente)
-// 5. Conocer la facturación de la empresa, que es el total ganado por los paquetes enviados.
-// 6. Dado un conjunto de paquetes, enviarlos a todos.
-// 7. Encontrar el paquete pendiente más caro y enviarlo, actualizando los pendientes en caso de haberlo podido enviar.
-// 8. Cada punto debe tener mínimo un test que demuestren su correcto funcionamiento.
-// 9. Agregar un nuevo mensajero y un nuevo paquete y garantizar que todo siga funcionando.
-
 import src.empresa.*
 import src.paquete.*
 import src.paquetito.*
 import src.paquetote.*
+import src.paqueteDiferente.*
 import src.destinos.*
 import src.vehiculos.*
 import src.mensajeros.*
@@ -80,7 +70,7 @@ describe "Prueba de sobrepeso de la empresa, caso de si, caso de no" {
     }
 }
 
-describe "prueba de envio de paquete, se contabiliza la ganancia, en caso de no enviarse se va a agregar como paquete pendiente"{
+describe "prueba de envios de paquete, se contabiliza la ganancia, en caso de no enviarse se va a agregar como paquete pendiente"{
     test "prueba de envio de paquete se espera una ganancia de 500" {
 
         empresa.contratarEmpleado(neo)
@@ -93,4 +83,59 @@ describe "prueba de envio de paquete, se contabiliza la ganancia, en caso de no 
 
         assert.equals(500 , empresa.gananciaTotal())
     }
+
+    test "prueba de envio de paquete, se espera que se agregue a paquetesPendientes"{
+        
+        empresa.contratarEmpleado(saraConnor)
+        
+        assert.equals(0, empresa.paquetesPendientes().size())
+    
+        empresa.entregarPaqueteSiSePuede(paquete)
+
+        assert.equals(1, empresa.paquetesPendientes().size())
+    }
+
+    test "Se envian todos los paquetes pendientes"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquete.pagarPaquete()
+
+        paquetote.destino(matrix)
+        paquetote.destino(brooklyn)
+        paquetote.pagarPaquete(3000)
+
+        empresa.entregarTodosLosPaquetes([paquetito, paquetote ,paquete])
+
+
+        assert.equals(0, empresa.paquetesPendientes().size())
+        assert.equals(700, empresa.gananciaTotal())
+    }
+}
+
+describe "prueba de envio de paquete mas caro, caso donde se puede enviar caso donde no"{
+
+    test "caso donde se puede enviar paquete mas caro"{
+
+        empresa.contratarEmpleado(neo)
+
+        paquete.pagarPaquete()
+
+        empresa.paquetesPendientes(paquetito)
+        empresa.paquetesPendientes(paquete)
+
+        assert.equals([paquetito, paquete], empresa.paquetesPendientes())
+
+        empresa.entregarElPaqueteMasCaro()
+
+        assert.equals([paquetito], empresa.paquetesPendientes())
+    }
+}
+
+test "entrega diferente, un paquete solo puede ser entregado por un mensajero diferente al resto"{
+
+    assert.equals(true, paqueteDiferente.sePuedeEntregar(hector))
+    assert.equals(false, paqueteDiferente.sePuedeEntregar(neo))
+    // No entiendo si se referian a esto en el ultimo inciso del readme de la parte 3
+    
 }
