@@ -1,0 +1,28 @@
+import mensajeros.*
+import destinos.*
+
+object paquete{
+    var pago = false
+    var destino = matrix
+
+    method destino(nuevoDestino){
+        destino = nuevoDestino
+    }
+
+    method pago(){
+        return pago
+    }
+
+    method precio(){
+        return destino.precio()
+    }
+
+    method pagarPaquete(){
+        pago = true
+    }
+
+
+    method sePuedeEntregar(mensajero){
+        return self.pago() && destino.requisito(mensajero)
+    }
+}

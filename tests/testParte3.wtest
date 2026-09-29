@@ -1,0 +1,141 @@
+import src.empresa.*
+import src.paquete.*
+import src.paquetito.*
+import src.paquetote.*
+import src.paqueteDiferente.*
+import src.destinos.*
+import src.vehiculos.*
+import src.mensajeros.*
+
+
+
+describe "Averiguar si un paquete puede ser entregado, caso de si caso de no"{
+    test "Prueba de alguien puede entregar un paquete especial (todos los detinos), se espera true"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquetote.destino(matrix)
+        paquetote.pagarPaquete(100)
+
+
+        assert.equals(true, empresa.puedeAlguienEntregar(paquetote))
+    }
+
+    test "prueba de alguien puede entregar un paquete a brooklyn, se espera false"{
+
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+
+        neo.puedeLlamar(false)
+
+        paquete.destino(brooklyn)
+
+        assert.equals(false, empresa.puedeAlguienEntregar(paquete))
+
+    }
+}
+
+test "Quienes pueden entregar el paquete (destino broklyn)" {
+    
+    empresa.contratarEmpleado(neo)
+    empresa.contratarEmpleado(saraConnor)
+    empresa.contratarEmpleado(jeanGray)
+    
+    paquete.destino(matrix)
+    paquete.pagarPaquete()
+
+    assert.equals([neo, jeanGray], empresa.quienesPuedenEntregar(paquete))
+
+}
+
+describe "Prueba de sobrepeso de la empresa, caso de si, caso de no" {
+    test "Prueba de sobre peso con 3 empledos, se espera que NO tenga sobre peso"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+    
+        assert.equals(false, empresa.haySobrePeso())
+    }
+
+    test "Prueba de sobre peso con 3 empledos, se espera que SI tenga sobre peso"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+    
+        camion.cantAcoples(10)
+        saraConnor.nuevoVehiculo(camion)
+
+        assert.equals(true, empresa.haySobrePeso())
+    }
+}
+
+describe "prueba de envios de paquete, se contabiliza la ganancia, en caso de no enviarse se va a agregar como paquete pendiente"{
+    test "prueba de envio de paquete se espera una ganancia de 500" {
+
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(saraConnor)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquete.pagarPaquete()
+
+        empresa.entregarPaqueteSiSePuede(paquete)
+
+        assert.equals(500 , empresa.gananciaTotal())
+    }
+
+    test "prueba de envio de paquete, se espera que se agregue a paquetesPendientes"{
+        
+        empresa.contratarEmpleado(saraConnor)
+        
+        assert.equals(0, empresa.paquetesPendientes().size())
+    
+        empresa.entregarPaqueteSiSePuede(paquete)
+
+        assert.equals(1, empresa.paquetesPendientes().size())
+    }
+
+    test "Se envian todos los paquetes pendientes"{
+        empresa.contratarEmpleado(neo)
+        empresa.contratarEmpleado(jeanGray)
+
+        paquete.pagarPaquete()
+
+        paquetote.destino(matrix)
+        paquetote.destino(brooklyn)
+        paquetote.pagarPaquete(3000)
+
+        empresa.entregarTodosLosPaquetes([paquetito, paquetote ,paquete])
+
+
+        assert.equals(0, empresa.paquetesPendientes().size())
+        assert.equals(700, empresa.gananciaTotal())
+    }
+}
+
+describe "prueba de envio de paquete mas caro, caso donde se puede enviar caso donde no"{
+
+    test "caso donde se puede enviar paquete mas caro"{
+
+        empresa.contratarEmpleado(neo)
+
+        paquete.pagarPaquete()
+
+        empresa.paquetesPendientes(paquetito)
+        empresa.paquetesPendientes(paquete)
+
+        assert.equals([paquetito, paquete], empresa.paquetesPendientes())
+
+        empresa.entregarElPaqueteMasCaro()
+
+        assert.equals([paquetito], empresa.paquetesPendientes())
+    }
+}
+
+test "entrega diferente, un paquete solo puede ser entregado por un mensajero diferente al resto"{
+
+    assert.equals(true, paqueteDiferente.sePuedeEntregar(hector))
+    assert.equals(false, paqueteDiferente.sePuedeEntregar(neo))
+    // No entiendo si se referian a esto en el ultimo inciso del readme de la parte 3
+    
+}

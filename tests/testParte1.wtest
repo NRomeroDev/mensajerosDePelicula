@@ -1,0 +1,87 @@
+import src.mensajeros.*
+import src.paquete.*
+import src.vehiculos.*
+import src.destinos.*
+
+describe "Prueba de costo del paquete por destino, prueba de pago del paquete"{
+    test "Costo de paquete de Brookyn"{
+        paquete.destino(brooklyn)
+        assert.equals(150, paquete.precio())
+    }
+    
+    test "Costo de paquete de Matrix"{
+        paquete.destino(matrix)
+        assert.equals(500, paquete.precio())
+    }
+
+    test "Prueba de pago de paquete, primero no va a estar pago, luego si"{
+        assert.equals(false, paquete.pago())
+
+        paquete.pagarPaquete()
+
+        assert.equals(true, paquete.pago())
+    }
+}
+
+describe "Prueba de envio de paquete a la matrix, el paquete sera llevado por Neo, primero sin estar pago, luego va a a ser pago" {
+    test "Paquete no pago, no deberia poder enviarse"{
+
+        // El paquete siempre se inicia sin estar pago
+
+        // El paquete siempre empieza con mensajero siendo neo y con destino la matrix
+
+        assert.equals(false, paquete.sePuedeEntregar(neo))
+    }
+
+    test "Paquete pago, deberia poder enviarse"{
+        
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(neo))
+    }
+}
+
+describe "Prueba de envio a la matrix, el paquete sera llevado por Jean Gray, primero va a estar pago, luego no va a estarlo"{
+    test "Paquete pago, deberia poder enviarse"{
+        paquete.pagarPaquete()
+        assert.equals(true, paquete.sePuedeEntregar(jeanGray))
+    }
+
+    test "Paquete no pago, no deberia poder enviarse"{
+        assert.equals(false, paquete.sePuedeEntregar(jeanGray))
+    }
+}
+
+describe "Prueba de envio a Brookyn, el paquete va a estar pago en todos casos, el mensajero es Sara Connor, Sara pesa 70kg, 
+            se usaran distintos tipos de vehiculos (camion y moto)" {
+
+    test "Prueba de envio de paquete, vehiculo camion sin acoplados, deberia poder enviarse"{
+        saraConnor.peso(70)
+        saraConnor.nuevoVehiculo(camion) // El camion siempre inicia sin acoplados
+        paquete.pagarPaquete()
+
+        paquete.destino(brooklyn)
+
+        assert.equals(true, paquete.sePuedeEntregar(saraConnor))
+    }
+
+    test "Prueba de envio de paquete, vehiculo camion con un acople, no deberia poder enviarse"{
+        saraConnor.peso(70)
+        camion.cantAcoples(1)
+        saraConnor.nuevoVehiculo(camion) 
+        paquete.pagarPaquete()
+
+        paquete.destino(brooklyn)
+
+        assert.equals(false, paquete.sePuedeEntregar(saraConnor))
+    }
+
+    test "Prueba de envio paquete, vehiculo moto, deberia poder enviarse"{
+        saraConnor.peso(70)
+        saraConnor.nuevoVehiculo(moto) 
+        paquete.pagarPaquete()
+ 
+        paquete.destino(brooklyn)
+ 
+        assert.equals(true, paquete.sePuedeEntregar(saraConnor))
+    }
+}
